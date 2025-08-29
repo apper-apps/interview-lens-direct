@@ -7,7 +7,7 @@ import Card from "@/components/atoms/Card";
 const InterviewCompletePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { interviewTitle, recordingCount } = location.state || {};
+const { interviewTitle, recordingCount } = location.state || {};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-success-50 via-blue-50/30 to-neutral-100 flex items-center justify-center p-4">
@@ -41,7 +41,7 @@ const InterviewCompletePage = () => {
             </h1>
             
             <p className="text-lg text-neutral-600 mb-8">
-              Thank you for completing your video interview{interviewTitle && ` for ${interviewTitle}`}. 
+Thank you for completing your video interview{interviewTitle && ` for ${interviewTitle}`}.
               Your responses have been successfully recorded and submitted.
             </p>
           </motion.div>

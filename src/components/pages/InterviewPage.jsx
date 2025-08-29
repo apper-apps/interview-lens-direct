@@ -30,7 +30,7 @@ const InterviewPage = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await interviewService.getInterview(id);
+const data = await interviewService.getInterview(id);
       setInterview(data);
       
       // Load existing recordings
@@ -52,7 +52,7 @@ const InterviewPage = () => {
 
   const handleRecordingComplete = async (videoBlob, duration) => {
     try {
-      const currentQuestion = interview.questions[currentQuestionIndex];
+const currentQuestion = interview.questions[currentQuestionIndex];
       await interviewService.saveRecording(
         interview.Id, 
         currentQuestion.Id, 
@@ -62,7 +62,7 @@ const InterviewPage = () => {
       
       // Update local recordings map
       const newRecordings = new Map(recordings);
-      newRecordings.set(currentQuestion.Id, {
+newRecordings.set(currentQuestion.Id, {
         questionId: currentQuestion.Id,
         videoBlob,
         duration,
@@ -91,14 +91,14 @@ const InterviewPage = () => {
   const handleSubmitInterview = async () => {
     try {
       setSubmitting(true);
-      await interviewService.submitInterview(interview.Id);
+await interviewService.submitInterview(interview.Id);
       
       toast.success("Interview submitted successfully!");
       
       // Navigate to success page
       navigate("/interview-complete", { 
         state: { 
-          interviewTitle: interview.title,
+interviewTitle: interview.title,
           recordingCount: recordings.size
         }
       });
@@ -123,7 +123,7 @@ const InterviewPage = () => {
     return <Error message="Interview not found" />;
   }
 
-  const currentQuestion = interview.questions[currentQuestionIndex];
+const currentQuestion = interview.questions[currentQuestionIndex];
   const hasRecordedCurrent = recordings.has(currentQuestion.Id);
   const canSubmit = recordings.size > 0;
 
@@ -141,7 +141,7 @@ const InterviewPage = () => {
               <ApperIcon name="Video" size={24} className="text-white" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-neutral-800 to-neutral-600 bg-clip-text text-transparent">
-              {interview.title}
+{interview.title}
             </h1>
           </div>
           <p className="text-neutral-600 text-lg">
@@ -152,7 +152,7 @@ const InterviewPage = () => {
         {/* Question Card */}
         <AnimatePresence mode="wait">
           <QuestionCard
-            key={currentQuestion.Id}
+key={currentQuestion.Id}
             question={currentQuestion}
             questionNumber={currentQuestionIndex + 1}
             totalQuestions={interview.questions.length}

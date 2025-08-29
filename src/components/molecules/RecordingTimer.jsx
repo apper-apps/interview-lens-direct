@@ -36,7 +36,7 @@ const RecordingTimer = ({ isRecording, onTimeUpdate, maxDuration = null }) => {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const getTimeColor = () => {
+const getTimeColor = () => {
     if (!maxDuration) return "text-neutral-700";
     const remaining = maxDuration - seconds;
     if (remaining <= 30) return "text-recording-500";
@@ -52,7 +52,7 @@ const RecordingTimer = ({ isRecording, onTimeUpdate, maxDuration = null }) => {
         {formatTime(seconds)}
       </span>
       
-      {maxDuration && (
+{maxDuration && (
         <div className="flex items-center gap-1 text-sm text-neutral-500">
           <ApperIcon name="Clock" size={14} />
           <span>/ {formatTime(maxDuration)}</span>

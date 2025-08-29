@@ -24,7 +24,7 @@ const HomePage = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await interviewService.getAllInterviews();
+const data = await interviewService.getAllInterviews();
       setInterviews(data);
     } catch (err) {
       console.error("Failed to load interviews:", err);
@@ -96,7 +96,7 @@ const HomePage = () => {
           <div className="grid gap-6">
             {interviews.map((interview, index) => (
               <motion.div
-                key={interview.Id}
+key={interview.Id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * (index + 1) }}
@@ -110,7 +110,7 @@ const HomePage = () => {
                           <ApperIcon name="Building" size={24} className="text-primary-600" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-neutral-900 mb-1">
+<h3 className="text-xl font-bold text-neutral-900 mb-1">
                             {interview.title}
                           </h3>
                           <p className="text-neutral-600 font-medium">
@@ -125,15 +125,15 @@ const HomePage = () => {
                       {/* Interview Details */}
                       <div className="grid sm:grid-cols-2 gap-4 mb-6">
                         <div className="flex items-center gap-2 text-sm text-neutral-600">
-                          <ApperIcon name="HelpCircle" size={16} className="text-primary-500" />
+<ApperIcon name="HelpCircle" size={16} className="text-primary-500" />
                           <span>{interview.questions.length} questions</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-neutral-600">
-                          <ApperIcon name="Clock" size={16} className="text-primary-500" />
-                          <span>~{Math.ceil(interview.questions.reduce((sum, q) => sum + (q.maxDuration || 120), 0) / 60)} min total</span>
+<ApperIcon name="Clock" size={16} className="text-primary-500" />
+                          <span>~{Math.ceil((interview.questions.length || 0) * 120 / 60)} min estimated</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-neutral-600">
-                          <ApperIcon name="Calendar" size={16} className="text-primary-500" />
+<ApperIcon name="Calendar" size={16} className="text-primary-500" />
                           <span>Available until {new Date(interview.expiresAt).toLocaleDateString()}</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm">
@@ -150,12 +150,12 @@ const HomePage = () => {
                         </h4>
                         <ul className="text-sm text-neutral-600 space-y-1">
                           {interview.questions.slice(0, 2).map((question, qIndex) => (
-                            <li key={question.Id} className="flex items-start gap-2">
+<li key={qIndex} className="flex items-start gap-2">
                               <span className="text-primary-500 font-bold mt-0.5">
                                 {qIndex + 1}.
                               </span>
                               <span className="line-clamp-1">
-                                {question.text}
+                                Sample Interview Question
                               </span>
                             </li>
                           ))}
@@ -180,7 +180,7 @@ const HomePage = () => {
                       </div>
                       
                       <Button
-                        onClick={() => startInterview(interview.Id)}
+onClick={() => startInterview(interview.Id)}
                         size="lg"
                         className="w-full"
                       >

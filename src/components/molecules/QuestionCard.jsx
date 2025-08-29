@@ -26,11 +26,11 @@ const QuestionCard = ({ question, questionNumber, totalQuestions }) => {
             </div>
             
             <h2 className="text-xl font-semibold text-neutral-900 leading-relaxed">
-              {question.text}
+{question.text}
             </h2>
             
             {question.maxDuration && (
-              <div className="flex items-center gap-1 mt-4 text-sm text-neutral-500">
+<div className="flex items-center gap-1 mt-4 text-sm text-neutral-500">
                 <ApperIcon name="Clock" size={14} />
                 <span>Maximum duration: {Math.floor(question.maxDuration / 60)}:{(question.maxDuration % 60).toString().padStart(2, "0")}</span>
               </div>

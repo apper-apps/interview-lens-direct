@@ -117,7 +117,7 @@ const VideoRecorder = ({
     setRecordingDuration(seconds);
     
     // Auto-stop at max duration
-    if (question.maxDuration && seconds >= question.maxDuration) {
+if (question.maxDuration && seconds >= question.maxDuration) {
       stopRecording();
       toast.warning("Recording stopped - maximum duration reached.");
     }
@@ -258,7 +258,7 @@ const VideoRecorder = ({
           </div>
           <p>
             Look directly at the camera, speak clearly, and ensure you're in a well-lit area. 
-            {question.maxDuration && (
+{question.maxDuration && (
               <span className="ml-1">
                 You have up to {Math.floor(question.maxDuration / 60)} minutes to answer.
               </span>
