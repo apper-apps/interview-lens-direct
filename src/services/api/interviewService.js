@@ -368,8 +368,7 @@ class InterviewService {
       throw error;
     }
   }
-
-  async deleteRecording(interviewId, questionId) {
+async deleteRecording(interviewId, questionId) {
     try {
       // First find the recording to delete
       const recording = await this.getRecording(interviewId, questionId);
@@ -423,6 +422,247 @@ class InterviewService {
   async base64ToBlob(base64) {
     const response = await fetch(base64);
     return await response.blob();
+  }
+
+  // Job Posting Methods
+  async getAllJobPostings() {
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "job_title_c" } },
+          { field: { Name: "company_name_c" } },
+          { field: { Name: "website_c" } },
+          { field: { Name: "instruction_c" } },
+          { field: { Name: "intro_video_c" } },
+          { field: { Name: "intro_image_c" } },
+          { field: { Name: "interview_id_c" } },
+          { field: { Name: "CreatedOn" } },
+          { field: { Name: "ModifiedOn" } }
+        ]
+      };
+      
+      const response = await this.apperClient.fetchRecords("job_posting_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+      
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+      
+      return response.data.map(posting => ({
+        Id: posting.Id,
+        name: posting.Name,
+        jobTitle: posting.job_title_c,
+        companyName: posting.company_name_c,
+        website: posting.website_c,
+        instruction: posting.instruction_c,
+        introVideo: posting.intro_video_c,
+        introImage: posting.intro_image_c,
+        interviewId: posting.interview_id_c,
+        createdOn: posting.CreatedOn,
+        modifiedOn: posting.ModifiedOn
+      }));
+      
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching job postings:", error?.response?.data?.message);
+      } else {
+        console.error(error);
+      }
+      return [];
+    }
+  }
+
+  async getJobPosting(id) {
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "job_title_c" } },
+          { field: { Name: "company_name_c" } },
+          { field: { Name: "website_c" } },
+          { field: { Name: "instruction_c" } },
+          { field: { Name: "intro_video_c" } },
+          { field: { Name: "intro_image_c" } },
+          { field: { Name: "interview_id_c" } }
+        ]
+      };
+      
+      const response = await this.apperClient.getRecordById("job_posting_c", parseInt(id), params);
+      
+      if (!response.success) {
+        throw new Error(response.message || "Job posting not found");
+      }
+      
+      return {
+        Id: response.data.Id,
+        name: response.data.Name,
+        jobTitle: response.data.job_title_c,
+        companyName: response.data.company_name_c,
+        website: response.data.website_c,
+        instruction: response.data.instruction_c,
+        introVideo: response.data.intro_video_c,
+        introImage: response.data.intro_image_c,
+        interviewId: response.data.interview_id_c
+      };
+      
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching job posting:", error?.response?.data?.message);
+      } else {
+        console.error(error);
+      }
+      throw error;
+    }
+  }
+
+  async createJobPosting(data) {
+    try {
+      const params = {
+        records: [
+          {
+            Name: data.name || data.jobTitle,
+            job_title_c: data.jobTitle,
+            company_name_c: data.companyName,
+            website_c: data.website,
+            instruction_c: data.instruction,
+            intro_video_c: data.introVideo || '',
+            intro_image_c: data.introImage || '',
+            interview_id_c: data.interviewId ? parseInt(data.interviewId) : null
+          }
+        ]
+      };
+      
+      const response = await this.apperClient.createRecord("job_posting_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success);
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create job posting ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          throw new Error("Failed to create job posting");
+        }
+        
+        const successfulRecord = response.results.find(result => result.success);
+        return {
+          Id: successfulRecord.data.Id,
+          name: data.name || data.jobTitle,
+          jobTitle: data.jobTitle,
+          companyName: data.companyName,
+          website: data.website,
+          instruction: data.instruction,
+          introVideo: data.introVideo,
+          introImage: data.introImage,
+          interviewId: data.interviewId
+        };
+      }
+      
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error creating job posting:", error?.response?.data?.message);
+      } else {
+        console.error(error);
+      }
+      throw error;
+    }
+  }
+
+  async updateJobPosting(id, data) {
+    try {
+      const params = {
+        records: [
+          {
+            Id: parseInt(id),
+            Name: data.name || data.jobTitle,
+            job_title_c: data.jobTitle,
+            company_name_c: data.companyName,
+            website_c: data.website,
+            instruction_c: data.instruction,
+            intro_video_c: data.introVideo || '',
+            intro_image_c: data.introImage || '',
+            interview_id_c: data.interviewId ? parseInt(data.interviewId) : null
+          }
+        ]
+      };
+      
+      const response = await this.apperClient.updateRecord("job_posting_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success);
+        if (failedRecords.length > 0) {
+          console.error(`Failed to update job posting ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          throw new Error("Failed to update job posting");
+        }
+        
+        return {
+          Id: parseInt(id),
+          name: data.name || data.jobTitle,
+          jobTitle: data.jobTitle,
+          companyName: data.companyName,
+          website: data.website,
+          instruction: data.instruction,
+          introVideo: data.introVideo,
+          introImage: data.introImage,
+          interviewId: data.interviewId
+        };
+      }
+      
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating job posting:", error?.response?.data?.message);
+      } else {
+        console.error(error);
+      }
+      throw error;
+    }
+  }
+
+  async deleteJobPosting(id) {
+    try {
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+      
+      const response = await this.apperClient.deleteRecord("job_posting_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return false;
+      }
+      
+      if (response.results) {
+        const failedDeletions = response.results.filter(result => !result.success);
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete job posting ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
+          return false;
+        }
+        
+        return true;
+      }
+      
+      return false;
+      
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error deleting job posting:", error?.response?.data?.message);
+      } else {
+        console.error(error);
+      }
+      return false;
+    }
   }
 }
 

@@ -14,6 +14,7 @@ import Button from "@/components/atoms/Button";
 import HomePage from "@/components/pages/HomePage";
 import InterviewPage from "@/components/pages/InterviewPage";
 import InterviewCompletePage from "@/components/pages/InterviewCompletePage";
+import AdminPortal from "@/components/pages/AdminPortal";
 import Loading from "@/components/ui/Loading";
 
 // Create auth context
@@ -131,7 +132,7 @@ function App() {
   const AppHeader = () => (
     <header className="bg-white shadow-sm border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+<div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <h1 className="text-xl font-bold text-neutral-900">InterviewLens</h1>
@@ -140,19 +141,30 @@ function App() {
           
           <div className="flex items-center gap-4">
             {user && (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-neutral-600">
-                  Welcome, {user.firstName || user.name || 'User'}
-                </span>
+              <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={authMethods.logout}
+                  onClick={() => navigate('/admin')}
                   className="flex items-center gap-2"
                 >
-                  <ApperIcon name="LogOut" size={16} />
-                  Logout
+                  <ApperIcon name="Settings" size={16} />
+                  Admin Portal
                 </Button>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-neutral-600">
+                    Welcome, {user.firstName || user.name || 'User'}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={authMethods.logout}
+                    className="flex items-center gap-2"
+                  >
+                    <ApperIcon name="LogOut" size={16} />
+                    Logout
+                  </Button>
+                </div>
               </div>
             )}
           </div>
@@ -166,7 +178,7 @@ function App() {
       <div className="min-h-screen bg-neutral-50">
         {isAuthenticated && <AppHeader />}
         
-        <Routes>
+<Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/callback" element={<Callback />} />
@@ -174,6 +186,7 @@ function App() {
           <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
           <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminPortal />} />
           <Route path="/interview/:id" element={<InterviewPage />} />
           <Route path="/interview-complete" element={<InterviewCompletePage />} />
         </Routes>
