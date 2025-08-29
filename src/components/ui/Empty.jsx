@@ -22,7 +22,7 @@ const Empty = ({
         <p className="text-neutral-600 mb-6 leading-relaxed">
           {message}
         </p>
-        {action && (
+{action && typeof action === 'function' && (
           <button
             onClick={action}
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-medium rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-200 btn-hover shadow-lg"
