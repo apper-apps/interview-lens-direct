@@ -428,5 +428,3 @@ class InterviewService {
 
 // Export singleton instance
 export default new InterviewService();
-
-export default new InterviewService();
